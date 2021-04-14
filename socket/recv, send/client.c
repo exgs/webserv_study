@@ -22,7 +22,7 @@ int main()
 
 	addr.sin_family = AF_INET;
 	addr.sin_port = htons(port);
-	addr.sin_addr.s_addr = inet_addr("255.255.255.0");
+	addr.sin_addr.s_addr = inet_addr("127.0.0.1");
 
 	if (connect(sock, (struct sockaddr*)&addr, sizeof(SA)) == -1) {
 		fprintf(stderr, "Connect Error : %s\n", strerror(errno));
@@ -31,20 +31,21 @@ int main()
 	else printf("connected\n");
 
 	//Make send message
-	for (int i = 0; i < 50;) {
-		for (int j = 0; j < 5; j++, i++)
+	for (int i = 0; i < 50;)
+	{
+		for (int j = 0; j < 10; j++, i++)
 			buffer[i] = 'a' + j;
 	}
-	printf("%s\n", buffer);
+	printf("client: %s\n", buffer);
 
-	while ((send_len = send(sock, buffer, 256, 0)) == -1) {
+	while ((send_len = send(sock, buffer, 2, 0)) != -1) {
 		if (errno == EINTR) {
 			continue;
 		}
-		else {
-			fprintf(stderr, "Send Error : %s\n", strerror(errno));
-			return -1;
-		}
+		// else {
+		// 	fprintf(stderr, "Send Error : %s\n", strerror(errno));
+		// 	return -1;
+		// }
 	}
 
 	while ((recv_len = recv(sock, buffer, 256, 0)) == -1) {
