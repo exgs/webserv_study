@@ -35,22 +35,24 @@ int main( )
 	}
 	
 	// 4) 서비스 요청과 처리
-	if((n = read(c_socket, rcvBuffer, 2)) < 0) 
-		return (-1);
-	printf("%d\n", n);
-	if((n = read(c_socket, rcvBuffer, 2)) < 0) 
-		return (-1);
-	printf("%d\n", n);
-	if((n = read(c_socket, rcvBuffer, 2)) < 0) 
-		return (-1);
-	printf("%d\n", n);
-	if((n = read(c_socket, rcvBuffer, 2)) < 0) 
-		return (-1);
-	printf("%d\n", n);
-	if((n = read(c_socket, rcvBuffer, 2)) < 0) 
-		return (-1);
-	printf("%d\n", n);
+	// if((n = read(c_socket, rcvBuffer, 2)) < 0) 
+	// 	return (-1);
+	// printf("%d\n", n);
+	// if((n = read(c_socket, rcvBuffer, 2)) < 0) 
+	// 	return (-1);
+	// printf("%d\n", n);
+	// if((n = read(c_socket, rcvBuffer, 2)) < 0) 
+	// 	return (-1);
+	// printf("%d\n", n);
+	// if((n = read(c_socket, rcvBuffer, 2)) < 0) 
+	// 	return (-1);
+	// printf("%d\n", n);
+	// if((n = read(c_socket, rcvBuffer, 2)) < 0) 
+	// 	return (-1);
+	// printf("%d\n", n);
 	/* ------------- recv -------------*/
+
+
 	// if (-1 == (n = recv(c_socket, rcvBuffer, 2, 0)))
 	// 	return (-1);
 	// printf("%d\n", n);
@@ -67,7 +69,14 @@ int main( )
 	// 	return (-1);
 	// printf("%d\n", n);
 
+	/* write로 쓴거 한번에  읽기 */
+	char *rcvpointer = rcvBuffer;
+	while(0 < (n = recv(c_socket, rcvpointer, 2, 0)))
+	{
+		rcvpointer += n;
+	}
 	// rcvBuffer[n] = '\0';
+	*rcvpointer = '\0';
 	printf("received Data : %s\n", rcvBuffer);
 	
 	// 5) 소켓 연결을 종료
