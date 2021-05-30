@@ -110,5 +110,9 @@ int main()
 	ret = access("./directory2/", F_OK);
 	cout << "ret: " << ret << endl;
 	perror("perror: ");
+
+	cout << " ------ 어떻게 판단하지?? ------" << endl;
+	cout << ft::isDirPath("./directory") << endl;
+	cout << ft::isFilePath("./directory") << endl;
 	return (1);
 }
