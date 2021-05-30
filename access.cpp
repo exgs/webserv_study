@@ -1,13 +1,18 @@
 #include <iostream>
 #include <unistd.h>
-#include <errno.h>
+#include <string>
+#include <dirent.h>
 #include <sys/stat.h>
+#include <fcntl.h>
+#include <string>
+#include <fcntl.h>
+#include <sys/types.h>
 
 using namespace std;
 
 namespace ft
 {
-	bool access(std::string absolute_path, int temp);
+	int	 access(std::string absolute_path, int temp);
 	bool isFilePath(const std::string &path);
 	bool isDirPath(const std::string &path);
 }
@@ -47,7 +52,7 @@ bool ft::isDirPath(const std::string &path)
 		return 0;
 }
 
-bool ft::access(std::string absolute_path, int temp)
+int ft::access(std::string absolute_path, int temp)
 {
 	if (ft::isDirPath(absolute_path) == true)
 	{
@@ -55,50 +60,55 @@ bool ft::access(std::string absolute_path, int temp)
 		dir = opendir(absolute_path.c_str());
 		closedir(dir); // NOTE 추가함
 		if (dir == NULL)
-			return (false);
+			return (-1);
 		else
-			return (true);
+			return (0);
 	}
 	else if (ft::isFilePath(absolute_path) == true)
 	{
 		int fd = open(absolute_path.c_str(), 0);
 		close(fd);
 		if (fd == -1)
-			return (false);
+			return (-1);
 		else
-			return (true);
+			return (0);
 	}
-	return (false);
+	return (-1);
 }
 
 int main()
 {
 	int ret;
-	errno = 0;
+	dup2(1, 2);
 	cout << " ---------------------file--------------------- " << endl;
-	ret = ft::access("./file", F_OK);
+	errno = 0;
+	ret = access("./file", F_OK);
 	cout << "ret: " << ret << endl;
 	perror("perror: "); // NOTE 20 Not a directory
 	errno = 0;
-	ret = ft::access("./file/", F_OK);
+	ret = access("./file/", F_OK);
 	cout << "ret: " << ret << endl;
 	perror("perror: ");
 
 	errno = 0;
-	ret = ft::access("./file2/", F_OK);
+	ret = access("./file2/", F_OK);
 	cout << "ret: " << ret << endl;
 	perror("perror: "); // NOTE 2 NO such file or directory
 
 	cout << " ---------------------directory--------------------- " << endl;
 
 	errno = 0;
-	ret = ft::access("./directory", F_OK);
+	ret = access("./directory", F_OK);
 	cout << "ret: " << ret << endl;
 	perror("perror: ");
 	errno = 0;
 	ret = access("./directory/", F_OK);
 	cout << "ret: " << ret << endl;
 	perror("perror: ");
-	cout << "hello world" << endl;
+
+	errno = 0;
+	ret = access("./directory2/", F_OK);
+	cout << "ret: " << ret << endl;
+	perror("perror: ");
 	return (1);
 }
