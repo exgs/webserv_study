@@ -9,6 +9,8 @@ connectionSocket, addr = serverSocket.accept()
 print("The server is ready to receive")
 while True:
 	sentence = connectionSocket.recv(1024)
+	if not sentence:
+		break
 	sentence = sentence.decode()
 	print("Client: " + sentence)
 	modifiedmessage = sentence.upper()
